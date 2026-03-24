@@ -84,7 +84,8 @@ void renderTUI(TunerState &st, TuningRegistry &reg, const std::string &status,
     else if (st.listening.load())
       ss << " [live]";
     ss << "\n\n";
-    ss << "Controls: n/p = preset  r = reset  c = custom  q = quit\n";
+    ss << "Controls:    n/p = preset        r = reset       c = custom      q "
+          "= quit\n";
     if (!status.empty())
       ss << "Status: " << status << "\n";
     ss << "\nPresets:\n";
