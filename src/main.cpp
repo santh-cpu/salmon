@@ -9,19 +9,58 @@
 #include <iomanip>
 #include <iostream>
 #include <sstream>
+#include <sys/ioctl.h>
 #include <thread>
+#include <unistd.h>
 #include <vector>
 
 namespace Ansi {
 const char *CLEAR = "\033[2J\033[H";
 const char *HIDE_CURSOR = "\033[?25l";
 const char *SHOW_CURSOR = "\033[?25h";
+inline std::string move(int row, int col) {
+  return "\033[" + std::to_string(row) + ";" + std::to_string(col) + "H";
+}
 } // namespace Ansi
 
 constexpr int DISPLAY_FPS = 20;
 static std::atomic<bool> g_running{true};
 
 void sigHandler(int) { g_running = false; }
+
+int getTerminalWidth() {
+  struct winsize w;
+  ioctl(STDOUT_FILENO, TIOCGWINSZ, &w);
+  return w.ws_col;
+}
+
+const std::vector<std::string> ART = {
+    "⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣠⣴⣦⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀",
+    "⠀⠀⠀⠀⠀⠀⣤⣤⣄⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣴⣾⣿⣿⢿⣷⠀⠀⢠⣾⣿⣿⣷⣦⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀",
+    "⠀⢀⣄⡀⠀⢸⣿⣿⣿⣿⣦⡀⠀⠀⠀⠀⠀⢀⣴⣿⣿⣿⣿⡿⢈⣿⡆⢠⣿⣿⣿⣿⣿⣿⣿⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀",
+    "⣶⣿⣿⣿⣦⠀⣿⡏⢿⣿⣿⣿⣦⣤⣤⣤⣤⣿⣿⣿⣿⣿⣿⡇⣸⣿⡇⢸⣿⣿⣿⣿⣿⣿⣿⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀",
+    "⢻⣿⣿⣿⣿⣷⣿⣧⠈⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣷⣿⣿⡇⣿⣿⣿⣿⣿⣿⣿⠏⠀⠀⠀⣀⡀⣠⠀⡤⢰⠄⠀",
+    "⠻⣿⣿⣿⣿⣿⣿⣿⣾⣿⢛⣍⡻⣿⣿⣿⡟⣱⣦⡙⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠏⠀⠀⠀⠀⣽⡗⢺⡶⡷⠿⢻⡆",
+    "⠀⠙⢿⣿⣿⣿⣟⣿⣿⡇⣸⣿⣧⢸⣿⣿⡁⣿⣿⡇⢹⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠏⠀⠀⢀⣤⠾⠛⠃⠈⠁⣠⡴⠞⠀",
+    "⠀⠀⠈⠻⣿⣿⣿⣿⣿⣧⢹⣿⡏⣼⣿⣿⣧⣻⡿⣣⣿⣿⣿⣿⣿⡿⣻⣿⣿⣿⣿⠃⢀⣠⠾⠋⠙⣆⢀⣀⣠⡾⠋⠀⠀⠀",
+    "⠀⠀⠀⠀⠙⣿⣿⣿⣿⣿⣷⣭⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⢡⣿⣿⣿⣿⣧⡾⠛⠹⣄⢀⣠⡾⠛⠁⠀⠀⠀⠀⠀⠀",
+    "⠀⠀⠀⠀⠀⠈⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⢁⣾⣿⣿⠿⠛⢻⡄⢀⣠⠿⠛⢁⣤⣾⣿⣷⠀⣀⣤⣶⡄",
+    "⠀⠀⠀⠀⠀⠀⠈⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⢀⣾⡿⠛⢧⡀⢀⣠⡿⢛⣁⠀⣠⣾⣿⣿⣿⣿⣿⣿⣿⣿⠃",
+    "⠀⠀⠀⠀⠀⠀⠀⠘⣿⣿⣿⣿⣿⣿⠟⠁⠀⠙⣿⣿⣿⣿⡴⠛⣇⠀⢀⣨⡿⠛⠁⣰⣿⣿⣷⣿⣿⣿⣿⣿⣿⣿⣿⣿⣁⡀",
+    "⠀⠀⠀⠀⠀⠀⠀⣀⣸⣿⣿⣿⡿⠋⢀⣀⣀⣀⣸⡿⠟⢹⡄⢀⣸⣷⣿⣿⣇⠀⣰⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡗",
+    "⠀⠀⠀⠀⢀⣴⠿⠛⠛⠛⠉⠉⣴⠞⠉⢡⡽⠛⠉⢧⣀⣠⣿⣿⣿⣿⣿⣿⣿⢠⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠟⠋⠀",
+    "⠀⠀⠀⣰⡿⠁⠀⠀⠀⠀⠀⢸⣅⠀⠀⠈⠳⣄⣠⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣧⠀⠀⠀⠀",
+    "⠀⠀⢀⣿⢁⣀⠀⠀⠀⣠⠖⠉⠈⢷⡀⠀⠀⠈⠁⠈⠛⠛⣛⠻⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠿⠿⠟⠉⠀⠀⠀⠀",
+    "⠀⠀⢸⣿⠈⠉⠀⠀⠘⢷⡀⠀⠀⣠⡗⠀⠀⠀⠀⠀⢀⣈⣋⣤⣿⣿⣿⣿⣿⣿⣿⣿⣿⠿⠛⠋⠉⠀⠀⠀⠀⠀⠀⠀⠀⠀",
+    "⠀⠀⠸⣿⡄⠀⠀⠀⠀⠈⢻⡴⠛⢁⣹⣶⠀⠀⣠⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠟⠉⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀",
+    "⠀⠀⠀⢻⣷⠀⠀⠀⠀⠀⠀⣀⣴⡿⠛⠙⣧⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣧⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀",
+    "⠀⠀⠀⠈⢻⣷⡀⠀⠀⢠⣾⠟⠉⠀⣠⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀",
+    "⠀⠀⠀⠀⠀⠙⠿⣶⣤⣀⣀⣠⣴⣾⣿⣿⣿⡟⠉⠉⠉⠙⣿⣿⣿⣿⣿⣿⣿⣿⣿⡄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀",
+    "⠀⠀⠀⠀⠀⠀⠀⠈⣿⣿⣿⣿⣿⣿⣿⣿⣿⠀⠀⠀⠀⠀⠈⢿⣿⣿⣿⣿⣿⣿⣿⣿⣆⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀",
+    "⠀⠀⠀⠀⠀⠀⠀⣠⣿⣿⣿⣿⣿⣿⣿⣿⠃⠀⠀⠀⠀⠀⠀⠀⠻⣿⣿⣿⣿⣿⣿⣿⣿⠆⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀",
+    "⠀⠀⠀⠀⠀⠀⠸⣿⣿⣿⣿⣿⣿⣿⣿⡏⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠻⠿⠿⠿⠿⠟⠋⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀",
+    "⠀⠀⠀⠀⠀⠀⠀⠙⠿⣿⣿⣿⣿⣿⠟⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀",
+    "⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠉⠉⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀"};
 
 void renderTUI(TunerState &st, TuningRegistry &reg, const std::string &status,
                bool enteringCustom, const std::string &customBuffer) {
@@ -60,8 +99,8 @@ void renderTUI(TunerState &st, TuningRegistry &reg, const std::string &status,
       const auto &tgt = preset.strings[active];
       ss << "Detected: " << std::fixed << std::setprecision(2) << freq << " Hz "
          << noteName << "\n";
-      ss << "Target: " << tgt.name << " " << std::fixed << std::setprecision(2)
-         << tgt.freq << " Hz\n";
+      ss << "Target  : " << std::fixed << std::setprecision(2) << tgt.freq
+         << " Hz" << " " << tgt.name << "\n";
       ss << "Cents: " << std::showpos << std::fixed << std::setprecision(1)
          << cents << std::noshowpos;
       if (std::abs(cents) <= 5.0)
@@ -96,7 +135,19 @@ void renderTUI(TunerState &st, TuningRegistry &reg, const std::string &status,
       ss << (i == activeIdx ? " > " : " ") << presets[i].name << "\n";
     }
   }
-  std::cout << ss.str() << std::flush;
+
+  std::cout << ss.str();
+
+  int termWidth = getTerminalWidth();
+  int artWidth = 80;
+  int startCol = termWidth - artWidth - 2;
+  int startRow = 2;
+
+  for (int i = 0; i < (int)ART.size(); ++i) {
+    std::cout << Ansi::move(startRow + i, startCol) << ART[i];
+  }
+
+  std::cout << std::flush;
 }
 
 void audioPipeline(TunerState &st, TuningRegistry &reg) {
