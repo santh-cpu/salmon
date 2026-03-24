@@ -1,6 +1,6 @@
 # salmon
 
-A mic-assisted, accurate guitar tuner for the terminal
+Mic-assisted and accurate guitar tuner for the terminal
 Completely offline and portable (as portable as your machine atleast)
 
 Pluck the string and wait for isntruction to tune up or down based on whatever tuning you wish to achieve
