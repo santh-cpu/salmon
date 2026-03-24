@@ -41,6 +41,8 @@ Pluck the string and wait for feedback and instructions
 ### Linux
 
 ```bash
+git clone https://github.com/santh-cpu/salmon.git
+cd salmon
 sudo apt install portaudio19-dev libfftw3-dev
 g++ -O3 -std=c++20 src/*.cpp -o salmon -Iinclude -lportaudio -lfftw3 -lpthread -lm
 ./salmon
@@ -49,6 +51,8 @@ g++ -O3 -std=c++20 src/*.cpp -o salmon -Iinclude -lportaudio -lfftw3 -lpthread -
 ### macOS
 
 ```bash
+git clone https://github.com/santh-cpu/salmon.git
+cd salmon
 brew install portaudio fftw
 g++ -O3 -std=c++20 src/*.cpp -o salmon -Iinclude -I/opt/homebrew/include -L/opt/homebrew/lib -lportaudio -lfftw3 -lpthread -lm
 ./salmon
@@ -61,7 +65,7 @@ install vcpkg
 vcpkg install portaudio fftw3
 ```
 
-### CMake
+### CMake (for windows (and unix))
 Download above dependencies the same way 
 ```bash
 mkdir build && cd build
