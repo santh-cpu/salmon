@@ -70,7 +70,8 @@ void renderTUI(TunerState &st, TuningRegistry &reg, const std::string &status,
         ss << "\n\n\t\t(TUNE UP " << std::abs(cents)
            << " cents - flat)\t\t\n\n";
       else
-        ss << " (TUNE DOWN " << std::abs(cents) << " cents - sharp)";
+        ss << "\n\n\t\t(TUNE DOWN " << std::abs(cents)
+           << " cents - sharp)\t\t\n\n";
       ss << "\n";
       if (ds == DisplayState::FROZEN)
         ss << "[FROZEN - pluck again to update]\n";

@@ -35,6 +35,7 @@ Pluck the string and wait for feedback and instructions
 ### Linux
 
 ```bash
+sudo apt install portaudio19-dev libfftw3-dev
 g++ -O3 -std=c++20 src/*.cpp -o salmon -lportaudio -lfftw3 -lpthread -lm
 ./salmon
 ```
@@ -51,9 +52,21 @@ g++ -O3 -std=c++20 src/*.cpp -o salmon \
 
 ### Windows
 
-Use vcpkg (portaudio + fftw3) + CMake, or MSYS2. Full Windows support is built-in.
+install vcpkg
+```bash
+vcpkg install portaudio fftw3
+```
 
-## What ive actually done
+### CMake
+Download above dependencies the same way 
+```bash
+mkdir build && cd build
+cmake ..
+cmake --build .
+./salmon
+```
+
+## What i've actually done
 
 - Lock-free ring buffer for real-time audio
 - Dual pitch detectors (YIN + HPS) with cross-validation
@@ -62,4 +75,4 @@ Use vcpkg (portaudio + fftw3) + CMake, or MSYS2. Full Windows support is built-i
 
 Open source. Feel free to fork, improve, or just use it to tune your guitar in peace.
 
-credits: claude wonderfully helped with all the tough math and signal processing. tnx babe \>w<
+Credits: Claude wonderfully helped with all the tough math and signal processing. tnx babe \>w<
