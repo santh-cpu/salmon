@@ -64,13 +64,20 @@ cmake --build .
 ./salmon
 ```
 
-## What i've actually done
+## Technical Highlights
 
-- Lock-free ring buffer for real-time audio
-- Dual pitch detectors (YIN + HPS) with cross-validation
-- Kalman smoothing and stability gating for jitter-free results
-- Minimal dependencies (only PortAudio and FFTW3)
+- **Lock-free SPSC ring buffer** (ensures real-time audio processing without blocking, so input stays fast and consistent) 
 
-Open source. Feel free to fork, improve, or just use it to tune your guitar in peace.
+- **YIN algorithm** (a well-known time-domain method for detecting the fundamental frequency. It’s good at locking onto the actual note, even when the signal is slightly off) 
 
-Credits: Claude wonderfully helped with all the tough math and signal processing. tnx babe \>w<
+- **Harmonic Product Spectrum (HPS)** (a frequency-domain technique that strengthens the true pitch by combining harmonic information. This helps in cases where overtones might confuse simpler detectors) 
+
+- **Cross-validation (YIN + HPS)** (both detectors run in parallel and agree on the result. If they don’t match, the system avoids jumping to unstable readings) 
+
+- **Kalman filter** (used to smooth the detected pitch over time, reducing jitter while still staying responsive to real changes) 
+
+- **Overlap-add with Hann window** — standard DSP technique to reduce spectral artifacts and keep frequency analysis clean  
+
+---
+
+Credit: Claude wonderfully helped with all the tough math and signal processing \>w<
