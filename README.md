@@ -36,7 +36,7 @@ Pluck the string and wait for feedback and instructions
 
 ```bash
 sudo apt install portaudio19-dev libfftw3-dev
-g++ -O3 -std=c++20 src/*.cpp -o salmon -lportaudio -lfftw3 -lpthread -lm
+g++ -O3 -std=c++20 src/*.cpp -o salmon -Iinclude -lportaudio -lfftw3 -lpthread -lm
 ./salmon
 ```
 
@@ -44,9 +44,7 @@ g++ -O3 -std=c++20 src/*.cpp -o salmon -lportaudio -lfftw3 -lpthread -lm
 
 ```bash
 brew install portaudio fftw
-g++ -O3 -std=c++20 src/*.cpp -o salmon \
-  -I/opt/homebrew/include -L/opt/homebrew/lib \
-  -lportaudio -lfftw3 -lpthread -lm
+g++ -O3 -std=c++20 src/*.cpp -o salmon -Iinclude -I/opt/homebrew/include -L/opt/homebrew/lib -lportaudio -lfftw3 -lpthread -lm
 ./salmon
 ```
 
