@@ -1,13 +1,13 @@
 # salmon
 
-<img width="1582" height="959" alt="Screenshot 2026-03-24 at 5 28 31 pm" src="https://github.com/user-attachments/assets/95a3e72e-4785-42c1-a42b-b0b5b5568f18" />
-
 A mic-assisted, accurate guitar tuner for the terminal
 Completely offline and portable (as portable as your machine atleast)
 
 Pluck the string and wait for isntruction to tune up or down based on whatever tuning you wish to achieve
 
 Create a custom tuning to tune your guitar to for maximum creative control
+
+<img width="1582" height="959" alt="Screenshot 2026-03-24 at 5 28 31 pm" src="https://github.com/user-attachments/assets/95a3e72e-4785-42c1-a42b-b0b5b5568f18" />
 
 ## Why salmon stands out
 
@@ -20,6 +20,7 @@ Create a custom tuning to tune your guitar to for maximum creative control
 - Single-purpose, lightweight
 
 ## Custom Tuning
+
 <img width="1582" height="959" alt="Screenshot 2026-03-24 at 5 29 21 pm" src="https://github.com/user-attachments/assets/7e1dfd30-46e5-49c3-8c80-efc194bc64cf" />
 
 ## Controls
