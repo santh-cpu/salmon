@@ -1,6 +1,11 @@
-salmo# salmon
+# salmon
 
-A fast, accurate, no-nonsense guitar tuner for the terminal.
+A mic-assisted, accurate guitar tuner for the terminal
+Completely offline and portable (as portable as your machine atleast)
+
+Pluck the string and wait for isntruction to tune up or down based on whatever tuning you wish to achieve
+
+Create a custom tuning to tune your guitar to for maximum creative control
 
 ## Why salmon stands out
 
@@ -10,7 +15,7 @@ A fast, accurate, no-nonsense guitar tuner for the terminal.
 - One-key custom tuning support — add any tuning instantly
 - Clean, low-latency UI with smooth real-time feedback
 - Works perfectly on Linux, macOS, and Windows
-- Single-purpose, lightweight, and actually fun to use
+- Single-purpose, lightweight
 
 ## Controls
 
@@ -21,7 +26,9 @@ A fast, accurate, no-nonsense guitar tuner for the terminal.
 - r — reset
 - q — quit
 
-Just plug in your guitar, run it, and tune.
+Build once and run the program for on-the-go offline mic assisted guitar tuning. 
+
+Pluck the string and wait for feedback and instructions
 
 ## Quick Start
 
@@ -46,12 +53,13 @@ g++ -O3 -std=c++20 src/*.cpp -o salmon \
 
 Use vcpkg (portaudio + fftw3) + CMake, or MSYS2. Full Windows support is built-in.
 
-## For developers
+## What ive actually done
 
-- Clean C++20 multi-file architecture
 - Lock-free ring buffer for real-time audio
 - Dual pitch detectors (YIN + HPS) with cross-validation
 - Kalman smoothing and stability gating for jitter-free results
 - Minimal dependencies (only PortAudio and FFTW3)
 
 Open source. Feel free to fork, improve, or just use it to tune your guitar in peace.
+
+credits: claude wonderfully helped with all the tough math and signal processing. tnx babe \>w<
