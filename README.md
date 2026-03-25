@@ -40,21 +40,31 @@ Pluck the string and wait for feedback and instructions
 
 ### Linux
 
+### macOS
+
+#### App
+
+```bash
+brew install --cask santh-cpu/salmon/salmon
+```
+Click on the app installed from the launchpad and go full screen mode for optimal tuning expirience
+
+#### CLI tool
+
+```bash
+brew install santh-cpu/salmon/salmon
+
+salmon
+```
+call `salmon` anywhere to open salmon tuner
+
+
+### Linux
 ```bash
 git clone https://github.com/santh-cpu/salmon.git
 cd salmon
 sudo apt install portaudio19-dev libfftw3-dev
 g++ -O3 -std=c++20 src/*.cpp -o salmon -Iinclude -lportaudio -lfftw3 -lpthread -lm
-./salmon
-```
-
-### macOS
-
-```bash
-git clone https://github.com/santh-cpu/salmon.git
-cd salmon
-brew install portaudio fftw
-g++ -O3 -std=c++20 src/*.cpp -o salmon -Iinclude -I/opt/homebrew/include -L/opt/homebrew/lib -lportaudio -lfftw3 -lpthread -lm
 ./salmon
 ```
 
