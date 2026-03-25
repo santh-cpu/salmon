@@ -40,14 +40,14 @@ Pluck the string and wait for feedback and instructions
 
 ### macOS
 
-#### App
+#### (App)
 
 ```bash
 brew install --cask santh-cpu/salmon/salmon
 ```
 Click on the app installed from the launchpad and go full screen mode for optimal tuning expirience
 
-#### CLI tool
+#### (CLI tool)
 
 ```bash
 brew install santh-cpu/salmon/salmon
