@@ -58,16 +58,17 @@ g++ -O3 -std=c++20 src/*.cpp -o salmon -Iinclude -I/opt/homebrew/include -L/opt/
 ./salmon
 ```
 
-### Windows
+### Windows (use Cmake)
 
 install vcpkg
 ```bash
 vcpkg install portaudio fftw3
 ```
 
-### CMake (for windows (and unix))
-Download above dependencies the same way 
+### CMake
 ```bash
+git clone https://github.com/santh-cpu/salmon.git
+cd salmon
 mkdir build && cd build
 cmake ..
 cmake --build .
