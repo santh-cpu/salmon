@@ -38,8 +38,6 @@ Pluck the string and wait for feedback and instructions
 
 ## Quick Start
 
-### Linux
-
 ### macOS
 
 #### App
