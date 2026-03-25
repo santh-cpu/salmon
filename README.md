@@ -51,8 +51,6 @@ Click on the app installed from the launchpad and go full screen mode for optima
 
 ```bash
 brew install santh-cpu/salmon/salmon
-
-salmon
 ```
 call `salmon` anywhere to open salmon tuner
 
