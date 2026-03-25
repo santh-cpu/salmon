@@ -91,4 +91,4 @@ cmake --build .
 
 ---
 
-Credit: Claude wonderfully helped with all the tough math and signal processing \>w<
+Credit: Claude wonderfully helped with all the tough math and digital signal processing \>w<
