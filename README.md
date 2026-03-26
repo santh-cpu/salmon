@@ -1,61 +1,45 @@
-# salmon
+#  salmon
 
-Mic-assisted and accurate guitar tuner for the terminal
+Guitar Tuner that lives in your Terminal and actually works
+
+Mic-assisted and accurate Tuner for the Terminal
 Completely offline and portable (as portable as your machine atleast)
 
-Pluck the string and wait for isntruction to tune up or down based on whatever tuning you wish to achieve
+pluck a string. it listens and tells you what to do. that's it, go tune your guitar
 
-Create a custom tuning to tune your guitar to for maximum creative control
+<img width="1582" height="959" alt="salmon tuner in action" src="https://github.com/user-attachments/assets/95a3e72e-4785-42c1-a42b-b0b5b5568f18" />
 
-<img width="1582" height="959" alt="Screenshot 2026-03-24 at 5 28 31 pm" src="https://github.com/user-attachments/assets/95a3e72e-4785-42c1-a42b-b0b5b5568f18" />
+-----
 
-## Why salmon stands out
+## Why salmon
 
-- Extremely stable pitch detection — combines YIN and HPS algorithms with cross-validation
-- Almost never gives false readings, even with background noise
-- Supports all common guitar, bass, and ukulele tunings
-- One-key custom tuning support — add any tuning instantly
-- Clean, low-latency UI with smooth real-time feedback
-- Works perfectly on Linux, macOS, and Windows
-- Single-purpose, lightweight
+salmon runs **two Pitch Detection algorithms at the same time (YIN and HPS)**. YIN algorithm excels in detecting pitch of low frequency signals and fumbles in the higher range. HPS, however excels in the higher frequency range as per observation. the final reading is only displayed when both algorithms agree (within 25 cents), proving to be more accurate than either of them individually.
 
-## Custom Tuning
+on top of that, a **Kalman Filter** smooths the output over time so the display doesn't flicker around when detecting small disturbances.
 
-<img width="1582" height="959" alt="Screenshot 2026-03-24 at 5 29 21 pm" src="https://github.com/user-attachments/assets/7e1dfd30-46e5-49c3-8c80-efc194bc64cf" />
+the Audio Thread runs on a **Lock-free Ring Buffer** so the mic capture and the pitch processing never wait on each other. most naive implementations use a mutex here, which means the audio thread can stall mid-capture while processing catches up. that stall is a dropped sample. enough dropped samples and the pitch reading gets inaccurate. the Ring Buffer lets both threads run independently at full speed.
 
-## Controls
-
-- n / p — next / previous preset
-- 0 — auto detect mode
-- 1–8 — lock to specific string
-- c — create custom tuning
-- r — reset
-- q — quit
-
-Build once and run the program for on-the-go offline mic assisted guitar tuning. 
-
-Pluck the string and wait for feedback and instructions
+-----
 
 ## Quick Start
 
 ### macOS
 
-#### (App)
+#### App 
+(recommended, fullscreen for optimal tuning experience)
 
 ```bash
 brew install --cask santh-cpu/salmon/salmon
 ```
-Click on the app installed from the launchpad and go full screen mode for optimal tuning expirience
 
-#### (CLI tool)
+(as a CLI tool, then call `salmon` anywhere)
 
 ```bash
 brew install santh-cpu/salmon/salmon
 ```
-call `salmon` anywhere to open salmon tuner
-
 
 ### Linux
+
 ```bash
 git clone https://github.com/santh-cpu/salmon.git
 cd salmon
@@ -64,37 +48,53 @@ g++ -O3 -std=c++20 src/*.cpp -o salmon -Iinclude -lportaudio -lfftw3 -lpthread -
 ./salmon
 ```
 
-### Windows (use Cmake)
+### Windows (CMake)
 
-install vcpkg
 ```bash
 vcpkg install portaudio fftw3
-```
 
-### CMake
-```bash
 git clone https://github.com/santh-cpu/salmon.git
-cd salmon
-mkdir build && cd build
-cmake ..
-cmake --build .
+cd salmon && mkdir build && cd build
+cmake .. && cmake --build .
 ./salmon
 ```
 
+-----
+
+## Controls
+
+|key      |does                     |
+|---------|-------------------------|
+|`n` / `p`|next / previous preset   |
+|`0`      |auto-detect mode         |
+|`1`–`8`  |lock to a specific string|
+|`c`      |create a Custom Tuning   |
+|`r`      |reset                    |
+|`q`      |quit                     |
+
+-----
+
+## Custom Tunings
+
+<img width="1582" height="959" alt="custom tuning input" src="https://github.com/user-attachments/assets/7e1dfd30-46e5-49c3-8c80-efc194bc64cf" />
+
+press `c` and type a name followed by the notes you want, like:
+
+```
+skinnylove C2 G2 E3 G3 C4 C4
+```
+
+-----
+
 ## Technical Highlights
 
-- **Lock-free SPSC ring buffer** (ensures real-time audio processing without blocking, so input stays fast and consistent) 
+- **YIN**: known for its excellent accuracy in Pitch Detection, with error rates significantly lower than many competing methods. performance can drop in high-noise environments
+- **HPS (Harmonic Product Spectrum)**: generally effective at identifying fault components and distinguishing the Fundamental Frequency from noise. generally not suitable for identifying pitch in very low-frequency ranges (e.g., below 50 Hz)
+- **Cross-validation**: both algorithms run in parallel. if they land within 25 cents of each other, the reading is trusted. if not, salmon stays quiet rather than guessing
+- **Kalman Filter**: smooths pitch over time. responsive to real changes, resistant to jitter
+- **Hann Window + Overlap-add**: standard DSP trick to keep spectral analysis clean at frame boundaries
+- **Lock-free SPSC Ring Buffer**: the Audio Capture thread and the processing thread never block each other
 
-- **YIN algorithm** (a well-known time-domain method for detecting the fundamental frequency. It’s good at locking onto the actual note, even when the signal is slightly off) 
+-----
 
-- **Harmonic Product Spectrum (HPS)** (a frequency-domain technique that strengthens the true pitch by combining harmonic information. This helps in cases where overtones might confuse simpler detectors) 
-
-- **Cross-validation (YIN + HPS)** (both detectors run in parallel and agree on the result. If they don’t match, the system avoids jumping to unstable readings) 
-
-- **Kalman filter** (used to smooth the detected pitch over time, reducing jitter while still staying responsive to real changes) 
-
-- **Overlap-add with Hann window** — standard DSP technique to reduce spectral artifacts and keep frequency analysis clean  
-
----
-
-Credit: Claude wonderfully helped with all the tough math and digital signal processing \>w<
+credit: got a little help with the difficult [DSP](https://publications.hnu.de/3642/1/Bachelorthesis.pdf) math \>w<
