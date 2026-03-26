@@ -59,7 +59,7 @@ call `salmon` anywhere to open salmon tuner
 ```bash
 git clone https://github.com/santh-cpu/salmon.git
 cd salmon
-sudo apt install portaudio19-dev libfftw3-dev
+sudo apt install g++ portaudio19-dev libfftw3-dev
 g++ -O3 -std=c++20 src/*.cpp -o salmon -Iinclude -lportaudio -lfftw3 -lpthread -lm
 ./salmon
 ```
