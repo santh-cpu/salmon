@@ -30,6 +30,8 @@ the Audio Thread runs on a **Lock-free Ring Buffer** so the mic capture and the 
 ```bash
 brew install --cask santh-cpu/salmon/salmon
 ```
+
+#### CLI
 <br>    
 (as a CLI tool, then call `salmon` anywhere)
 
