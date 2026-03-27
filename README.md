@@ -27,7 +27,6 @@ the Audio Thread runs on a **Lock-free Ring Buffer** so the mic capture and the 
 
 #### App 
 (recommended, fullscreen for optimal tuning experience)
-
 ```bash
 brew install --cask santh-cpu/salmon/salmon
 ```
