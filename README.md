@@ -32,7 +32,6 @@ brew install --cask santh-cpu/salmon/salmon
 ```
 
 #### CLI
-<br>    
 (as a CLI tool, then call `salmon` anywhere)
 
 ```bash
